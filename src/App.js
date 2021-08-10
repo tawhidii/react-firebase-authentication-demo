@@ -50,6 +50,14 @@ function App() {
       console.log(error.message)
     })
   }
+  // Handle Blur 
+  const handleBlur = (e) => {
+    console.log(e.target.name,e.target.value)
+  }
+  // Handle Submit 
+  const handleSubmit = () => {
+    console.log('Submit Done')
+  }
   return (
     <div className="App">{
       user.isSignIn ? <button onClick={handleSignOut}>Sign Out</button>:
@@ -64,6 +72,14 @@ function App() {
           <img src={user.photo} alt="" />
         </div>
       }
+      <h1>Custom User Auth</h1>
+      <form onSubmit={handleSubmit}>
+        <input type="email" name="email" onBlur={handleBlur} placeholder="Enter Email Address" required/>
+        <br />
+        <input type="password" name="" onBlur={handleBlur} placeholder="Enter password" required/>
+        <br/>
+        <input type="submit" value="Submit"/>
+      </form>
     </div>
   );
 }
