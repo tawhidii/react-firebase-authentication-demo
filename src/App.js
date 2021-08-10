@@ -8,7 +8,8 @@ import { useState } from 'react';
 firebase.initializeApp(firebaseConfig)
 
 function App() {
-  const provider = new firebase.auth.GoogleAuthProvider();
+  const googleProvider = new firebase.auth.GoogleAuthProvider();
+  const facebookProvider = new firebase.auth.FacebookAuthProvider();
   const [newUser,setNewUser] = useState(false)
   const [user,setUser] = useState({
     isSignIn:false,
@@ -20,7 +21,7 @@ function App() {
     error:""
   })
   const handleSignIn = () => {
-    firebase.auth().signInWithPopup(provider).then(result=>{
+    firebase.auth().signInWithPopup(googleProvider).then(result=>{
         const {displayName,email,photoURL} = result.user
         const signInUser = {
           isSignIn:true,
@@ -52,6 +53,25 @@ function App() {
     .catch(error=>{
       console.log(error.message)
     })
+  }
+  // Facebook Login 
+  const handleFacebookLogin = () => {
+    firebase.auth().signInWithPopup(facebookProvider).then(result=>{
+      const {displayName,email,photoURL} = result.user
+      const signInUser = {
+        isSignIn:true,
+        name:displayName,
+        email:email,
+        photo:photoURL
+      }
+      setUser(signInUser)
+      console.log(displayName,email,photoURL)
+  })
+  .catch(error=>{
+    console.log(error)
+    console.log(error.message)
+  })
+
   }
   // Handle Blur 
   const handleBlur = (e) => {
@@ -127,6 +147,7 @@ function App() {
       <button onClick={handleSignIn}>Sign in with Google</button>
 
     }
+    <button onClick={handleFacebookLogin}>Facebook Login</button>
       
       {
         user.isSignIn && <div>
